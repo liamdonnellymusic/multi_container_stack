@@ -1,0 +1,38 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t liamdonnellynyc/docker_hello_world -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true liamdonnellynyc/docker_hello_world npm run test
+
+# builds production version
+after_success:
+    - docker build -t liamdonnellynyc/multi-client ./client
+    - docker build -t liamdonnellynyc/multi-nginx ./nginx
+    - docker build -t liamdonnellynyc/multi-server ./server
+    - docker build -t liamdonnellynyc/multi-worker ./worker
+
+    # now login to docker CLI and push to dockerhub 
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push liamdonnellynyc/multi-client
+    - docker push liamdonnellynyc/multi-nginx
+    - docker push liamdonnellynyc/multi-server
+    - docker push liamdonnellynyc/multi-worker
+
+deploy:
+  provider: "elasticbeanstalk"
+  region: "eu-west-2"
+  app: "docker_hello_world"
+  env: "DockerHelloWorld-env"
+  bucket_name: "elasticbeanstalk-eu-west-2-901797501160"
+  bucket_path: "docker_hello_world"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+
