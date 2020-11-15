@@ -5,21 +5,26 @@
             "name": "client",
             "image": "liamdonnellynyc/multi-client",
             "hostname": "client",
-            "essential": false 
+            "essential": false,
+            "memory": 128
 
         },
         {
             "name": "api",
             "image": "liamdonnellynyc/multi-server",
             "hostname": "api",
-            "essential": false 
+            "essential": false,
+            "memory": 128
+
 
         },
         {
             "name": "worker",
             "image": "liamdonnellynyc/multi-worker",
             "hostname": "worker",
-            "essential": false 
+            "essential": false,
+            "memory": 128
+
 
         },
         {
@@ -33,7 +38,8 @@
                     "containerPort": 80
                 }
             ],
-            "links": ["client", "server"] 
+            "links": ["client", "server"],
+            "memory": 128
         }
 
     ]
