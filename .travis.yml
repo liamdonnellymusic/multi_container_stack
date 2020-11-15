@@ -24,15 +24,15 @@ after_success:
     - docker push liamdonnellynyc/multi-server
     - docker push liamdonnellynyc/multi-worker
 
-# deploy:
-#   provider: "elasticbeanstalk"
-#   region: "eu-west-2"
-#   app: "docker_hello_world"
-#   env: "DockerHelloWorld-env"
-#   bucket_name: "elasticbeanstalk-eu-west-2-901797501160"
-#   bucket_path: "docker_hello_world"
-#   on:
-#     branch: master
-#   access_key_id: $AWS_ACCESS_KEY
-#   secret_access_key: $AWS_SECRET_KEY
+deploy:
+  provider: "elasticbeanstalk"
+  region: "eu-west-2"
+  app: "multi-container-app"
+  env: "MultiContainerApp-env"
+  bucket_name: "elasticbeanstalk-eu-west-2-901797501160"
+  bucket_path: "multi-container-app"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
 
